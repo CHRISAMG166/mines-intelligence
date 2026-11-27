@@ -42,29 +42,205 @@
 <div class="footer">MINES INTELLIGENCE · 3.0 · CONTROL LOCAL · SIN CREDENCIALES NI APUESTAS AUTOMÁTICAS</div>
 </main>
 <script>
-const $=id=>document.getElementById(id);let mines=5;const states=Array(25).fill(0);let imageUrl=null;
-function choose(n,k){if(k<0||k>n)return 0;k=Math.min(k,n-k);let x=1;for(let i=1;i<=k;i++)x=x*(n-k+i)/i;return x}
-function fmt(x){return x.toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2})+'%'}
-function counts(){return{safe:states.filter(x=>x===1).length,knownMines:states.filter(x=>x===2).length,hidden:states.filter(x=>x===0).length}}
-function renderBoard(){const board=$('board');board.innerHTML='';states.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.className='cell'+(s===1?' safe':s===2?' mine':'');b.textContent=s===1?'◆':s===2?'✹':'·';b.setAttribute('aria-label','Casilla '+(i+1)+(s===0?', oculta':s===1?', gema revelada':', mina revelada'));b.setAttribute('aria-pressed',String(s!==0));b.addEventListener('click',()=>{states[i]=(states[i]+1)%3;renderBoard();updateAnalysis()});board.appendChild(b)})}
-function updateAnalysis(){mines=+$('mines').value;const c=counts();const left=mines-c.knownMines;$('mineCount').textContent=mines;$('safeCount').textContent=c.safe;$('knownMines').textContent=c.knownMines;$('remainingMines').textContent=Math.max(0,left);$('hiddenCount').textContent=c.hidden;const risk=c.hidden>0?left/c.hidden*100:0;$('risk').textContent=fmt(Math.max(0,Math.min(100,risk)));let html='';const target=+$('target').value;for(let k=1;k<=Math.min(target,c.hidden);k++){let p=1;for(let j=0;j<k;j++){const den=c.hidden-j;const safe=den-(left);p*=den>0?Math.max(0,safe)/den:0}const percent=p*100;html+='<div class="prob"><span>'+k+' '+(k===1?'selección':'selecciones')+' seguras consecutivas</span><b class="'+(percent>=50?'green':'gold')+'">'+fmt(percent)+'</b><div class="bar"><i style="width:'+Math.max(0,Math.min(100,percent))+'%"></i></div></div>'}$('probList').innerHTML=html||'<p class="note">No quedan casillas ocultas para evaluar.</p>';const invalid=left<0||c.safe+c.knownMines>25||left>c.hidden;$('analysisMsg').textContent=invalid?'Las marcas no son compatibles con la cantidad de minas configurada. Revisa los datos.':'Cada casilla oculta tiene el mismo riesgo estimado bajo el supuesto de distribución uniforme. No hay una casilla con ventaja demostrable.';$('analysisMsg').style.color=invalid?'var(--red)':'var(--muted)'}
-$('shot').addEventListener('change',e=>{
- const f=e.target.files&&e.target.files[0];
- if(!f){$('uploadMsg').textContent='No se seleccionó ninguna imagen. Inténtalo otra vez.';return}
- if(!f.type.startsWith('image/')){$('uploadMsg').textContent='El archivo seleccionado no parece ser una imagen compatible.';e.target.value='';return}
- if(imageUrl){URL.revokeObjectURL(imageUrl);imageUrl=null}
- const nextUrl=URL.createObjectURL(f);
- const img=$('preview');
- img.onload=()=>{$('uploadMsg').textContent='Captura cargada correctamente: '+f.name+'. Marca manualmente las gemas o minas visibles.';};
- img.onerror=()=>{URL.revokeObjectURL(nextUrl);imageUrl=null;img.removeAttribute('src');img.style.display='none';$('uploadMsg').textContent='Safari no pudo leer esta imagen. Prueba con una captura PNG o JPG.';};
- imageUrl=nextUrl;img.src=nextUrl;img.style.display='block';
-});
-$('mines').addEventListener('change',updateAnalysis);$('target').addEventListener('change',updateAnalysis);$('clearBoard').addEventListener('click',()=>{states.fill(0);renderBoard();updateAnalysis()});$('resetRound').addEventListener('click',()=>{states.fill(0);$('shot').value='';$('preview').removeAttribute('src');$('preview').style.display='none';$('uploadMsg').textContent='Nueva ronda lista. Selecciona otra captura si lo necesitas.';if(imageUrl){URL.revokeObjectURL(imageUrl);imageUrl=null}renderBoard();updateAnalysis()});
-renderBoard();updateAnalysis();
+'use strict';
+const $=id=>document.getElementById(id);
+let mines=5;
+const states=Array(25).fill(0);
+let imageUrl=null;
 
-const SESSION_START=5, LOSS_CAP=2, DEFAULT_STAKE=0.25;
-let balance=SESSION_START, totalLoss=0, stopped=false, ledger=[];
-const money=n=>'&&location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+function choose(n,k){
+ if(k<0||k>n)return 0;
+ k=Math.min(k,n-k);
+ let x=1;
+ for(let i=1;i<=k;i++)x=x*(n-k+i)/i;
+ return x;
+}
+function fmt(x){
+ return x.toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
+}
+function counts(){
+ return {safe:states.filter(x=>x===1).length,knownMines:states.filter(x=>x===2).length,hidden:states.filter(x=>x===0).length};
+}
+function renderBoard(){
+ const board=$('board');
+ board.innerHTML='';
+ states.forEach((state,i)=>{
+  const button=document.createElement('button');
+  button.type='button';
+  button.className='cell'+(state===1?' safe':state===2?' mine':'');
+  button.textContent=state===1?'◆':state===2?'✹':'·';
+  button.setAttribute('aria-label','Casilla '+(i+1)+(state===0?', oculta':state===1?', gema revelada':', mina revelada'));
+  button.setAttribute('aria-pressed',String(state!==0));
+  button.addEventListener('click',()=>{
+   states[i]=(states[i]+1)%3;
+   renderBoard();
+   updateAnalysis();
+  });
+  board.appendChild(button);
+ });
+}
+function updateAnalysis(){
+ mines=Number($('mines').value);
+ const c=counts();
+ const left=mines-c.knownMines;
+ $('mineCount').textContent=mines;
+ $('safeCount').textContent=c.safe;
+ $('knownMines').textContent=c.knownMines;
+ $('remainingMines').textContent=Math.max(0,left);
+ $('hiddenCount').textContent=c.hidden;
+ const risk=c.hidden>0?left/c.hidden*100:0;
+ $('risk').textContent=fmt(Math.max(0,Math.min(100,risk)));
+ let html='';
+ const target=Number($('target').value);
+ for(let k=1;k<=Math.min(target,c.hidden);k++){
+  let probability=1;
+  for(let j=0;j<k;j++){
+   const denominator=c.hidden-j;
+   const safe=denominator-left;
+   probability*=denominator>0?Math.max(0,safe)/denominator:0;
+  }
+  const percent=probability*100;
+  html+='<div class="prob"><span>'+k+' '+(k===1?'selección':'selecciones')+' seguras consecutivas</span><b class="'+(percent>=50?'green':'gold')+'">'+fmt(percent)+'</b><div class="bar"><i style="width:'+Math.max(0,Math.min(100,percent))+'%"></i></div></div>';
+ }
+ $('probList').innerHTML=html||'<p class="note">No quedan casillas ocultas para evaluar.</p>';
+ const invalid=left<0||c.safe+c.knownMines>25||left>c.hidden;
+ $('analysisMsg').textContent=invalid?'Las marcas no son compatibles con la cantidad de minas configurada. Revisa los datos.':'Cada casilla oculta tiene el mismo riesgo estimado bajo el supuesto de distribución uniforme. No hay una casilla con ventaja demostrable.';
+ $('analysisMsg').style.color=invalid?'var(--red)':'var(--muted)';
+}
+
+function showImageError(message){
+ const preview=$('preview');
+ preview.removeAttribute('src');
+ preview.style.display='none';
+ $('uploadMsg').textContent=message;
+}
+$('shot').addEventListener('change',event=>{
+ const file=event.target.files&&event.target.files[0];
+ if(!file){
+  $('uploadMsg').textContent='No se seleccionó ninguna imagen.';
+  return;
+ }
+ if(!file.type.startsWith('image/')){
+  showImageError('El archivo no se reconoce como imagen. Prueba con una captura PNG o JPG.');
+  event.target.value='';
+  return;
+ }
+ if(file.size>20*1024*1024){
+  showImageError('La imagen supera 20 MB. Selecciona una captura más pequeña.');
+  event.target.value='';
+  return;
+ }
+ $('uploadMsg').textContent='Leyendo imagen…';
+ const reader=new FileReader();
+ reader.onerror=()=>showImageError('No se pudo leer el archivo. Vuelve a seleccionarlo desde Fotos.');
+ reader.onload=()=>{
+  const preview=$('preview');
+  preview.onload=()=>{
+   preview.style.display='block';
+   $('uploadMsg').textContent='Captura cargada correctamente: '+file.name+'. Marca manualmente las gemas o minas visibles.';
+  };
+  preview.onerror=()=>showImageError('Safari no pudo mostrar esta imagen. Prueba compartiéndola como JPG o PNG.');
+  preview.src=String(reader.result);
+ };
+ reader.readAsDataURL(file);
+});
+
+$('mines').addEventListener('change',updateAnalysis);
+$('target').addEventListener('change',updateAnalysis);
+$('clearBoard').addEventListener('click',()=>{
+ states.fill(0);
+ renderBoard();
+ updateAnalysis();
+});
+$('resetRound').addEventListener('click',()=>{
+ states.fill(0);
+ $('shot').value='';
+ $('preview').removeAttribute('src');
+ $('preview').style.display='none';
+ $('uploadMsg').textContent='Nueva ronda lista. Selecciona otra captura si lo necesitas.';
+ if(imageUrl){URL.revokeObjectURL(imageUrl);imageUrl=null;}
+ renderBoard();
+ updateAnalysis();
+});
+renderBoard();
+updateAnalysis();
+
+const SESSION_START=5;
+const LOSS_CAP=2;
+const DEFAULT_STAKE=0.25;
+let balance=SESSION_START;
+let totalLoss=0;
+let stopped=false;
+let ledger=[];
+const money=n=>'$'+n.toFixed(2);
+function renderSession(){
+ const loss=totalLoss;
+ $('walletBalance').textContent=money(balance);
+ $('sessionLoss').textContent=money(loss);
+ $('lossBar').style.width=Math.min(100,loss/LOSS_CAP*100)+'%';
+ $('lossBar').style.background=loss>=LOSS_CAP?'var(--red)':'var(--gold)';
+ const capped=loss>=LOSS_CAP-0.000001;
+ if(capped)stopped=true;
+ $('sessionStatus').textContent=capped?'LÍMITE ALCANZADO: sesión detenida. No registres más apuestas.':stopped?'Sesión detenida manualmente. Reiníciala solo cuando decidas comenzar otra.':'Sesión activa para registro manual. Pérdida disponible: '+money(Math.max(0,LOSS_CAP-loss))+'.';
+ $('sessionStatus').style.color=capped?'var(--red)':'var(--muted)';
+ $('recordLoss').disabled=stopped||balance<=0;
+ $('recordWin').disabled=stopped;
+ $('ledger').innerHTML=ledger.length?ledger.slice().reverse().map(item=>'<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)"><span>'+item.label+' · '+item.time+'</span><b style="color:'+(item.delta>=0?'var(--green)':'var(--red)')+'">'+(item.delta>=0?'+':'')+money(item.delta)+'</b></div>').join(''):'Todavía no hay movimientos.';
+}
+function recordMove(kind){
+ if(stopped)return;
+ const stake=Number($('manualStake').value);
+ if(!Number.isFinite(stake)||stake<=0){
+  $('sessionStatus').textContent='Introduce un importe válido.';
+  return;
+ }
+ if(kind==='loss'&&stake>balance){
+  $('sessionStatus').textContent='El importe supera el saldo de referencia disponible.';
+  return;
+ }
+ if(kind==='loss'&&stake>Math.max(0,LOSS_CAP-totalLoss)){
+  $('sessionStatus').textContent='Ese importe supera la pérdida disponible de la sesión. Reduce la apuesta o detén la sesión.';
+  return;
+ }
+ let delta,label;
+ if(kind==='loss'){
+  delta=-stake;
+  label='Pérdida registrada';
+ }else{
+  const profit=Number($('winProfit').value);
+  if(!Number.isFinite(profit)||profit<=0){
+   $('sessionStatus').textContent='Introduce una ganancia neta válida.';
+   return;
+  }
+  delta=profit;
+  label='Ganancia neta registrada';
+ }
+ if(!confirm('¿Confirmas el registro manual de '+label.toLowerCase()+' por '+money(Math.abs(delta))+'?'))return;
+ if(kind==='loss')totalLoss+=stake;
+ balance=Math.max(0,balance+delta);
+ ledger.push({label,delta,time:new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})});
+ renderSession();
+}
+$('recordLoss').addEventListener('click',()=>recordMove('loss'));
+$('recordWin').addEventListener('click',()=>recordMove('win'));
+$('stopSession').addEventListener('click',()=>{
+ stopped=true;
+ renderSession();
+});
+$('newSession').addEventListener('click',()=>{
+ if(!confirm('¿Reiniciar el registro local a $5.00 y borrar los movimientos de esta sesión?'))return;
+ balance=SESSION_START;
+ totalLoss=0;
+ stopped=false;
+ ledger=[];
+ $('manualStake').value=DEFAULT_STAKE.toFixed(2);
+ $('winProfit').value=DEFAULT_STAKE.toFixed(2);
+ renderSession();
+});
+renderSession();
+if('serviceWorker'in navigator&&location.protocol.startsWith('http')){
+ window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
 </script></body></html>+n.toFixed(2);
 function renderSession(){
  const loss=totalLoss;
