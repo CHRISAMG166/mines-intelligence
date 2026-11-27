@@ -53,11 +53,11 @@ $('mines').addEventListener('change',updateAnalysis);$('target').addEventListene
 renderBoard();updateAnalysis();
 
 const SESSION_START=5, LOSS_CAP=2, DEFAULT_STAKE=0.25;
-let balance=SESSION_START, stopped=false, ledger=[];
+let balance=SESSION_START, totalLoss=0, stopped=false, ledger=[];
 const money=n=>'&&location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
 </script></body></html>+n.toFixed(2);
 function renderSession(){
- const loss=Math.max(0,SESSION_START-balance);
+ const loss=totalLoss;
  $('walletBalance').textContent=money(balance);
  $('sessionLoss').textContent=money(loss);
  $('lossBar').style.width=Math.min(100,loss/LOSS_CAP*100)+'%';
@@ -74,9 +74,9 @@ function recordMove(kind){
  if(stopped)return;
  const stake=Number($('manualStake').value);
  if(!Number.isFinite(stake)||stake<=0){$('sessionStatus').textContent='Introduce un importe válido.';return}
- if(kind==='loss'&&stake>balance){$('sessionStatus').textContent='El importe supera el saldo de referencia disponible.';return}
+ if(kind==='loss'&&stake>balance){$('sessionStatus').textContent='El importe supera el saldo de referencia disponible.';return}\n if(kind==='loss'&&stake>Math.max(0,LOSS_CAP-totalLoss)){ $('sessionStatus').textContent='Ese importe supera la pérdida disponible de la sesión. Reduce la apuesta o detén la sesión.';return; }
  let delta,label;
- if(kind==='loss'){delta=-stake;label='Pérdida registrada';}
+ if(kind==='loss'){delta=-stake;label='Pérdida registrada';totalLoss+=stake;}
  else{
   const profit=Number($('winProfit').value);
   if(!Number.isFinite(profit)||profit<=0){$('sessionStatus').textContent='Introduce una ganancia neta válida.';return}
@@ -92,7 +92,7 @@ $('recordWin').addEventListener('click',()=>recordMove('win'));
 $('stopSession').addEventListener('click',()=>{stopped=true;renderSession()});
 $('newSession').addEventListener('click',()=>{
  if(!confirm('¿Reiniciar el registro local a $5.00 y borrar los movimientos de esta sesión?'))return;
- balance=SESSION_START;stopped=false;ledger=[];$('manualStake').value=DEFAULT_STAKE.toFixed(2);$('winProfit').value=DEFAULT_STAKE.toFixed(2);renderSession();
+ balance=SESSION_START;totalLoss=0;stopped=false;ledger=[];$('manualStake').value=DEFAULT_STAKE.toFixed(2);$('winProfit').value=DEFAULT_STAKE.toFixed(2);renderSession();
 });
 renderSession();
 if('serviceWorker'in navigator&&location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
