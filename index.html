@@ -1,285 +1,54 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101827"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Mines Intel"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><title>Mines Intelligence 3.0</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Mines Intel">
+<link rel="manifest" href="./manifest.json"><link rel="apple-touch-icon" href="./icon-192.png">
+<title>Mines Intelligence 3.1</title>
 <style>
-:root{color-scheme:dark;--bg:#0b1220;--panel:#131f31;--panel2:#1b2a40;--line:#293a52;--text:#eef4fb;--muted:#9badc3;--green:#53d6a0;--red:#ff6b78;--gold:#f4c76b;--blue:#78a8ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#17283d 0,#0b1220 58%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);padding:env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom));min-height:100vh}.app{max-width:540px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;padding:18px 2px 20px}.brand{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.5px}.logo{width:38px;height:38px;border-radius:12px;background:#193d3a;color:var(--green);display:grid;place-items:center;font-size:21px}.tag{font-size:10px;color:var(--green);border:1px solid #27644f;border-radius:20px;padding:6px 9px;letter-spacing:1px}.sub{color:var(--muted);font-size:12px;margin-top:3px}.card{background:linear-gradient(145deg,#17253a,#111c2c);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:13px;box-shadow:0 12px 32px #0002}.section-title{font-size:14px;font-weight:750;margin:0 0 12px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#0e1928;border:1px solid #26364b;border-radius:13px;padding:12px}.stat small{display:block;color:var(--muted);font-size:11px}.stat strong{font-size:23px;display:block;margin-top:5px}.green{color:var(--green)}.gold{color:var(--gold)}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}.field select,.field input{width:100%;background:#0d1827;border:1px solid #31435b;color:var(--text);padding:12px;border-radius:11px;font-size:15px}.board{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.cell{aspect-ratio:1;border:1px solid #354b64;border-radius:11px;background:linear-gradient(145deg,#243750,#1a2a40);color:#91a8c2;font-size:19px;font-weight:700;display:grid;place-items:center;touch-action:manipulation;min-width:0}.cell.safe{background:#174738;border-color:#2d9a70;color:#70edb9}.cell.mine{background:#522b38;border-color:#b64d61;color:#ff9aa5}.cell:focus-visible,.btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}.actions{display:flex;gap:9px;margin-top:13px}.btn{border:0;border-radius:12px;padding:13px 14px;font-weight:750;font-size:14px;flex:1;background:#24364d;color:var(--text);cursor:pointer}.btn.primary{background:var(--green);color:#08251b}.btn:disabled{opacity:.45}.note{font-size:11px;color:var(--muted);line-height:1.5}.prob-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.prob{background:#0e1928;border:1px solid #26364b;border-radius:11px;padding:10px}.prob span{display:block;color:var(--muted);font-size:11px}.prob b{display:block;font-size:17px;margin-top:4px}.bar{height:7px;background:#26364b;border-radius:8px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;background:var(--green);border-radius:8px}.message{font-size:12px;color:var(--muted);min-height:18px;margin-top:10px;line-height:1.5}.footer{text-align:center;color:#71849b;font-size:10px;padding:8px 12px 18px}.pill{display:inline-block;padding:4px 8px;border-radius:20px;background:#20354a;color:#b9cce0;font-size:10px;margin-left:5px}.upload{display:block;width:100%;padding:13px;border:1px dashed #55708e;border-radius:12px;background:#0e1928;color:var(--text);font-weight:700;text-align:center;cursor:pointer;font-size:14px}.upload::file-selector-button{border:0;border-radius:8px;padding:9px 12px;margin-right:10px;background:#53d6a0;color:#08251b;font-weight:750}.upload:focus-within{outline:2px solid var(--blue);outline-offset:3px}.preview{display:none;width:100%;max-height:300px;object-fit:contain;border-radius:12px;margin-top:12px;background:#08111d}.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin:10px 0}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.dot.hidden{background:#647b96}.dot.safe{background:var(--green)}.dot.mine{background:var(--red)}.hint{border-left:3px solid var(--gold);padding:8px 10px;background:#2b281d55;border-radius:5px;font-size:11px;color:#e8d6a6;line-height:1.5}
+:root{color-scheme:dark;--bg:#0b1220;--panel:#131f31;--line:#293a52;--text:#eef4fb;--muted:#9badc3;--green:#53d6a0;--red:#ff6b78;--gold:#f4c76b;--blue:#78a8ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#17283d 0,#0b1220 58%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);padding:env(safe-area-inset-top) 14px calc(24px + env(safe-area-inset-bottom));min-height:100vh}.app{max-width:560px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;padding:18px 2px}.brand{display:flex;gap:10px;align-items:center;font-weight:850;letter-spacing:.5px}.logo{width:40px;height:40px;border-radius:12px;background:#193d3a;color:var(--green);display:grid;place-items:center;font-size:23px}.sub{color:var(--muted);font-size:12px;margin-top:3px}.tag,.pill{font-size:10px;color:var(--green);border:1px solid #27644f;border-radius:20px;padding:6px 9px;letter-spacing:.7px}.card{background:linear-gradient(145deg,#17253a,#111c2c);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:12px;box-shadow:0 12px 32px #0002}.title{font-size:14px;font-weight:800;margin:0 0 12px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stat{background:#0e1928;border:1px solid #26364b;border-radius:13px;padding:11px}.stat small{display:block;color:var(--muted);font-size:11px}.stat strong{font-size:22px;display:block;margin-top:5px}.green{color:var(--green)}.gold{color:var(--gold)}.red{color:var(--red)}.controls{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}.field select,.field input{width:100%;background:#0d1827;border:1px solid #31435b;color:var(--text);padding:12px;border-radius:11px;font-size:15px}.board{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.cell{aspect-ratio:1;border:1px solid #354b64;border-radius:11px;background:linear-gradient(145deg,#243750,#1a2a40);color:#91a8c2;font-size:19px;font-weight:700;display:grid;place-items:center;touch-action:manipulation;min-width:0}.cell.safe{background:#174738;border-color:#2d9a70;color:#70edb9}.cell.mine{background:#522b38;border-color:#b64d61;color:#ff9aa5}.cell:focus-visible,.btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}.actions{display:flex;gap:8px;margin-top:11px}.btn{border:0;border-radius:12px;padding:13px 10px;font-weight:750;font-size:13px;flex:1;background:#24364d;color:var(--text);cursor:pointer}.btn.primary{background:var(--green);color:#08251b}.btn:disabled{opacity:.4}.note{font-size:11px;color:var(--muted);line-height:1.5}.message{font-size:12px;color:var(--muted);min-height:18px;margin-top:9px;line-height:1.5}.prob-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}.prob{background:#0e1928;border:1px solid #26364b;border-radius:11px;padding:10px}.prob span{display:block;color:var(--muted);font-size:11px}.prob b{display:block;font-size:17px;margin-top:4px}.bar{height:7px;background:#26364b;border-radius:8px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;background:var(--green);border-radius:8px}.upload{display:block;width:100%;padding:13px;border:1px dashed #55708e;border-radius:12px;background:#0e1928;color:var(--text);font-weight:700;text-align:center}.preview{display:none;width:100%;max-height:280px;object-fit:contain;border-radius:12px;margin-top:10px;background:#08111d}.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin:10px 0}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.hidden{background:#647b96}.safe-dot{background:var(--green)}.mine-dot{background:var(--red)}.hint{border-left:3px solid var(--gold);padding:9px 10px;background:#2b281d55;border-radius:5px;font-size:11px;color:#e8d6a6;line-height:1.5}.footer{text-align:center;color:#71849b;font-size:10px;padding:8px 12px 18px}
 </style></head>
 <body><main class="app">
-<header class="top"><div class="brand"><div class="logo">◆</div><div>MINES INTELLIGENCE<div class="sub">Analizador visual · control de sesión</div></div></div><div class="tag">VERSIÓN 3.0</div></header>
-<section class="card"><h2 class="section-title">Panel de análisis <span class="pill">25 casillas</span></h2><div class="stats"><div class="stat"><small>Minas totales</small><strong id="mineCount" class="gold">5</strong></div><div class="stat"><small>Riesgo por casilla oculta</small><strong id="risk" class="gold">20,00%</strong></div><div class="stat"><small>Casillas seguras marcadas</small><strong id="safeCount" class="green">0</strong></div><div class="stat"><small>Minas confirmadas</small><strong id="knownMines">0</strong></div></div></section>
-<section class="card"><h2 class="section-title">1. Cargar captura de pantalla</h2><input id="shot" class="upload" type="file" accept="image/*" aria-label="Seleccionar captura desde Fotos"><img id="preview" class="preview" alt="Vista previa de la captura seleccionada"><div class="message" id="uploadMsg">Selecciona una captura del tablero Mines+ para verla aquí.</div><p class="note">La imagen se procesa localmente en este dispositivo. Esta versión no lee automáticamente el contenido de la captura: úsala como referencia visual y marca manualmente las casillas que el juego ya haya revelado.</p></section>
-<section class="card"><h2 class="section-title">2. Configurar la ronda</h2><div class="controls"><div class="field"><label for="mines">Minas totales</label><select id="mines"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option></select></div><div class="field"><label for="target">Selecciones consecutivas</label><select id="target"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div></div><p class="message" id="configMsg">Marca en el tablero inferior las casillas ya reveladas en la captura.</p></section>
-<section class="card"><h2 class="section-title">3. Marcar estado de las casillas</h2><div class="legend"><span><i class="dot hidden"></i>Oculta</span><span><i class="dot safe"></i>Gema revelada</span><span><i class="dot mine"></i>Mina revelada</span></div><div class="board" id="board" aria-label="Tablero de anotación de 25 casillas"></div><div class="actions"><button class="btn" id="clearBoard">Limpiar marcas</button><button class="btn primary" id="resetRound">Nueva ronda</button></div><p class="note">Toca cada casilla para alternar: oculta → gema revelada → mina revelada. Solo marca resultados que realmente puedas ver.</p></section>
-<section class="card"><h2 class="section-title">Análisis matemático</h2><div class="stats"><div class="stat"><small>Minas aún no localizadas</small><strong id="remainingMines" class="gold">5</strong></div><div class="stat"><small>Casillas aún ocultas</small><strong id="hiddenCount">25</strong></div></div><div class="prob-list" id="probList" style="margin-top:10px"></div><p class="note" style="margin:12px 0 0">Si se asume que las minas están distribuidas uniformemente, el riesgo de cada casilla oculta es minas restantes ÷ casillas ocultas. La probabilidad de k aciertos seguidos se calcula sin reemplazo.</p><div class="message" id="analysisMsg"></div></section>
-<section class="card" id="sessionPanel">
-<h2 class="section-title">4. Control de sesión · BetPlay <span class="pill">Manual</span></h2>
-<div class="stats">
- <div class="stat"><small>Saldo de referencia</small><strong id="walletBalance" class="green">$5.00</strong></div>
- <div class="stat"><small>Pérdida acumulada</small><strong id="sessionLoss" class="gold">$0.00</strong></div>
- <div class="stat"><small>Límite de pérdida</small><strong>$2.00</strong></div>
- <div class="stat"><small>Apuesta de referencia</small><strong>$0.25</strong></div>
-</div>
-<div class="bar" style="margin-top:12px"><i id="lossBar" style="width:0%;background:var(--gold)"></i></div>
-<p class="message" id="sessionStatus" role="status">Sesión preparada. Registra manualmente cada resultado.</p>
-<div class="controls" style="margin-top:10px">
- <div class="field"><label for="winProfit">Ganancia neta al ganar (USD)</label><input id="winProfit" type="number" min="0.01" step="0.01" value="0.25" inputmode="decimal"></div>
- <div class="field"><label for="manualStake">Importe de apuesta (USD)</label><input id="manualStake" type="number" min="0.01" step="0.01" value="0.25" inputmode="decimal"></div>
-</div>
-<div class="actions">
- <button class="btn" id="recordLoss">Registrar pérdida</button>
- <button class="btn primary" id="recordWin">Registrar ganancia</button>
-</div>
-<div class="actions">
- <button class="btn" id="stopSession">Detener sesión</button>
- <button class="btn" id="newSession">Reiniciar sesión</button>
-</div>
-<h3 class="section-title" style="margin-top:16px">Movimientos de esta sesión</h3>
-<div id="ledger" class="note">Todavía no hay movimientos.</div>
-<p class="note" style="margin-top:10px">Registro manual únicamente. El saldo mostrado es una referencia local y no consulta tu cuenta BetPlay. Una ganancia se registra como beneficio neto, sin incluir la devolución de la apuesta.</p>
-</section>
-<section class="card"><h2 class="section-title">Límite de este análisis</h2><div class="hint">No existe una forma fiable de deducir las posiciones de minas ocultas a partir de una captura donde todas las casillas siguen tapadas. El analizador calcula probabilidades; no predice resultados, no se conecta a BetPlay ni a 1WIN y no realiza apuestas.</div></section>
-<div class="footer">MINES INTELLIGENCE · 3.0 · CONTROL LOCAL · SIN CREDENCIALES NI APUESTAS AUTOMÁTICAS</div>
+<header class="top"><div class="brand"><div class="logo">◆</div><div>MINES INTELLIGENCE<div class="sub">Analizador de probabilidades · control de sesión</div></div></div><div class="tag">3.1</div></header>
+<section class="card"><h2 class="title">Panel de análisis</h2><div class="stats">
+<div class="stat"><small>Minas configuradas</small><strong id="mineCount" class="gold">5</strong></div>
+<div class="stat"><small>Riesgo por casilla oculta</small><strong id="risk" class="gold">20,00%</strong></div>
+<div class="stat"><small>Gemas confirmadas</small><strong id="safeCount" class="green">0</strong></div>
+<div class="stat"><small>Minas confirmadas</small><strong id="knownMines">0</strong></div></div></section>
+<section class="card"><h2 class="title">1. Cargar captura de Mines+</h2><label class="upload" for="shot">＋ Elegir imagen desde Fotos</label><input id="shot" type="file" accept="image/*" hidden><img id="preview" class="preview" alt="Vista previa de la captura"><div class="message" id="uploadMsg">Puedes cargar una captura para consultarla mientras marcas el tablero.</div><p class="note">La imagen se muestra localmente en tu dispositivo. Esta versión no interpreta automáticamente los símbolos de la captura; las marcas se introducen manualmente para evitar lecturas falsas.</p></section>
+<section class="card"><h2 class="title">2. Configuración del juego</h2><div class="controls"><div class="field"><label for="mines">Cantidad de minas</label><select id="mines"><option value="1" >1</option><option value="2" >2</option><option value="3" >3</option><option value="4" >4</option><option value="5" selected>5</option><option value="6" >6</option><option value="7" >7</option><option value="8" >8</option><option value="9" >9</option><option value="10" >10</option><option value="11" >11</option><option value="12" >12</option><option value="13" >13</option><option value="14" >14</option><option value="15" >15</option><option value="16" >16</option><option value="17" >17</option><option value="18" >18</option><option value="19" >19</option><option value="20" >20</option><option value="21" >21</option><option value="22" >22</option><option value="23" >23</option><option value="24" >24</option></select></div><div class="field"><label for="target">Gemas consecutivas</label><select id="target"><option value="1" >1</option><option value="2" >2</option><option value="3" selected>3</option><option value="4" >4</option><option value="5" >5</option><option value="6" >6</option><option value="7" >7</option><option value="8" >8</option><option value="9" >9</option><option value="10" >10</option></select></div></div></section>
+<section class="card"><h2 class="title">3. Estado de las 25 casillas</h2><div class="legend"><span><i class="dot hidden"></i>Oculta</span><span><i class="dot safe-dot"></i>Gema revelada</span><span><i class="dot mine-dot"></i>Mina revelada</span></div><div id="board" class="board" aria-label="Tablero 5 por 5"></div><div class="actions"><button class="btn" id="clearBoard">Borrar marcas</button><button class="btn primary" id="newRound">Nueva ronda</button></div><p class="note">Toca una casilla para cambiar su estado: oculta → gema → mina → oculta. Marca únicamente lo que ya se haya revelado en el juego.</p><div id="analysisMsg" class="message" role="status"></div></section>
+<section class="card"><h2 class="title">4. Probabilidad matemática</h2><div class="stats"><div class="stat"><small>Minas restantes</small><strong id="remainingMines" class="gold">5</strong></div><div class="stat"><small>Casillas ocultas</small><strong id="hiddenCount">25</strong></div></div><div id="probList" class="prob-list" style="margin-top:10px"></div><p class="note" style="margin-top:10px">La probabilidad supone que las minas están distribuidas uniformemente y que cada selección es sin reemplazo. No identifica dónde están las minas ocultas.</p></section>
+<section class="card"><h2 class="title">5. Control de sesión · registro manual</h2><div class="stats">
+<div class="stat"><small>Saldo de referencia</small><strong id="balance" class="green">$5.00</strong></div><div class="stat"><small>Pérdida acumulada</small><strong id="loss" class="gold">$0.00</strong></div><div class="stat"><small>Límite de pérdida</small><strong>$2.00</strong></div><div class="stat"><small>Apuesta predeterminada</small><strong>$0.25</strong></div></div>
+<div class="bar"><i id="lossBar" style="width:0%"></i></div><div class="controls" style="margin-top:12px"><div class="field"><label for="stake">Apuesta / pérdida (USD)</label><input id="stake" type="number" min="0.01" step="0.01" value="0.25" inputmode="decimal"></div><div class="field"><label for="profit">Ganancia neta (USD)</label><input id="profit" type="number" min="0.01" step="0.01" value="0.25" inputmode="decimal"></div></div>
+<div class="actions"><button class="btn" id="logLoss">Registrar pérdida</button><button class="btn primary" id="logWin">Registrar ganancia</button></div><div class="actions"><button class="btn" id="stop">Detener sesión</button><button class="btn" id="resetSession">Reiniciar registro</button></div><div id="sessionMsg" class="message" role="status"></div><h3 class="title" style="margin-top:15px">Movimientos</h3><div id="ledger" class="note">Sin movimientos registrados.</div><p class="note">El saldo es una referencia, no consulta tu cuenta BetPlay. La pérdida acumulada no disminuye cuando registras ganancias. Al alcanzar $2 de pérdidas, el registro se bloquea. No hay conexión ni apuestas automáticas.</p></section>
+<section class="card"><h2 class="title">Qué puede y qué no puede hacer</h2><div class="hint">Puede calcular riesgos, llevar un registro y ayudarte a respetar límites. No puede revelar la ubicación de bombas tapadas ni garantizar aciertos. Ninguna captura con todas las casillas cerradas contiene información visual suficiente para saber dónde están las minas.</div></section>
+<div class="footer">MINES INTELLIGENCE · 3.1 · PROCESAMIENTO LOCAL · SIN CREDENCIALES</div>
 </main>
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
-let mines=5;
 const states=Array(25).fill(0);
-let imageUrl=null;
-
-function choose(n,k){
- if(k<0||k>n)return 0;
- k=Math.min(k,n-k);
- let x=1;
- for(let i=1;i<=k;i++)x=x*(n-k+i)/i;
- return x;
-}
-function fmt(x){
- return x.toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
-}
-function counts(){
- return {safe:states.filter(x=>x===1).length,knownMines:states.filter(x=>x===2).length,hidden:states.filter(x=>x===0).length};
-}
-function renderBoard(){
- const board=$('board');
- board.innerHTML='';
- states.forEach((state,i)=>{
-  const button=document.createElement('button');
-  button.type='button';
-  button.className='cell'+(state===1?' safe':state===2?' mine':'');
-  button.textContent=state===1?'◆':state===2?'✹':'·';
-  button.setAttribute('aria-label','Casilla '+(i+1)+(state===0?', oculta':state===1?', gema revelada':', mina revelada'));
-  button.setAttribute('aria-pressed',String(state!==0));
-  button.addEventListener('click',()=>{
-   states[i]=(states[i]+1)%3;
-   renderBoard();
-   updateAnalysis();
-  });
-  board.appendChild(button);
- });
-}
-function updateAnalysis(){
- mines=Number($('mines').value);
- const c=counts();
- const left=mines-c.knownMines;
- $('mineCount').textContent=mines;
- $('safeCount').textContent=c.safe;
- $('knownMines').textContent=c.knownMines;
- $('remainingMines').textContent=Math.max(0,left);
- $('hiddenCount').textContent=c.hidden;
- const risk=c.hidden>0?left/c.hidden*100:0;
- $('risk').textContent=fmt(Math.max(0,Math.min(100,risk)));
- let html='';
- const target=Number($('target').value);
- for(let k=1;k<=Math.min(target,c.hidden);k++){
-  let probability=1;
-  for(let j=0;j<k;j++){
-   const denominator=c.hidden-j;
-   const safe=denominator-left;
-   probability*=denominator>0?Math.max(0,safe)/denominator:0;
-  }
-  const percent=probability*100;
-  html+='<div class="prob"><span>'+k+' '+(k===1?'selección':'selecciones')+' seguras consecutivas</span><b class="'+(percent>=50?'green':'gold')+'">'+fmt(percent)+'</b><div class="bar"><i style="width:'+Math.max(0,Math.min(100,percent))+'%"></i></div></div>';
- }
- $('probList').innerHTML=html||'<p class="note">No quedan casillas ocultas para evaluar.</p>';
- const invalid=left<0||c.safe+c.knownMines>25||left>c.hidden;
- $('analysisMsg').textContent=invalid?'Las marcas no son compatibles con la cantidad de minas configurada. Revisa los datos.':'Cada casilla oculta tiene el mismo riesgo estimado bajo el supuesto de distribución uniforme. No hay una casilla con ventaja demostrable.';
- $('analysisMsg').style.color=invalid?'var(--red)':'var(--muted)';
-}
-
-function showImageError(message){
- const preview=$('preview');
- preview.removeAttribute('src');
- preview.style.display='none';
- $('uploadMsg').textContent=message;
-}
-$('shot').addEventListener('change',event=>{
- const file=event.target.files&&event.target.files[0];
- if(!file){
-  $('uploadMsg').textContent='No se seleccionó ninguna imagen.';
-  return;
- }
- if(!file.type.startsWith('image/')){
-  showImageError('El archivo no se reconoce como imagen. Prueba con una captura PNG o JPG.');
-  event.target.value='';
-  return;
- }
- if(file.size>20*1024*1024){
-  showImageError('La imagen supera 20 MB. Selecciona una captura más pequeña.');
-  event.target.value='';
-  return;
- }
- $('uploadMsg').textContent='Leyendo imagen…';
- const reader=new FileReader();
- reader.onerror=()=>showImageError('No se pudo leer el archivo. Vuelve a seleccionarlo desde Fotos.');
- reader.onload=()=>{
-  const preview=$('preview');
-  preview.onload=()=>{
-   preview.style.display='block';
-   $('uploadMsg').textContent='Captura cargada correctamente: '+file.name+'. Marca manualmente las gemas o minas visibles.';
-  };
-  preview.onerror=()=>showImageError('Safari no pudo mostrar esta imagen. Prueba compartiéndola como JPG o PNG.');
-  preview.src=String(reader.result);
- };
- reader.readAsDataURL(file);
-});
-
-$('mines').addEventListener('change',updateAnalysis);
-$('target').addEventListener('change',updateAnalysis);
-$('clearBoard').addEventListener('click',()=>{
- states.fill(0);
- renderBoard();
- updateAnalysis();
-});
-$('resetRound').addEventListener('click',()=>{
- states.fill(0);
- $('shot').value='';
- $('preview').removeAttribute('src');
- $('preview').style.display='none';
- $('uploadMsg').textContent='Nueva ronda lista. Selecciona otra captura si lo necesitas.';
- if(imageUrl){URL.revokeObjectURL(imageUrl);imageUrl=null;}
- renderBoard();
- updateAnalysis();
-});
-renderBoard();
-updateAnalysis();
-
-const SESSION_START=5;
-const LOSS_CAP=2;
-const DEFAULT_STAKE=0.25;
-let balance=SESSION_START;
-let totalLoss=0;
-let stopped=false;
-let ledger=[];
-const money=n=>'$'+n.toFixed(2);
-function renderSession(){
- const loss=totalLoss;
- $('walletBalance').textContent=money(balance);
- $('sessionLoss').textContent=money(loss);
- $('lossBar').style.width=Math.min(100,loss/LOSS_CAP*100)+'%';
- $('lossBar').style.background=loss>=LOSS_CAP?'var(--red)':'var(--gold)';
- const capped=loss>=LOSS_CAP-0.000001;
- if(capped)stopped=true;
- $('sessionStatus').textContent=capped?'LÍMITE ALCANZADO: sesión detenida. No registres más apuestas.':stopped?'Sesión detenida manualmente. Reiníciala solo cuando decidas comenzar otra.':'Sesión activa para registro manual. Pérdida disponible: '+money(Math.max(0,LOSS_CAP-loss))+'.';
- $('sessionStatus').style.color=capped?'var(--red)':'var(--muted)';
- $('recordLoss').disabled=stopped||balance<=0;
- $('recordWin').disabled=stopped;
- $('ledger').innerHTML=ledger.length?ledger.slice().reverse().map(item=>'<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)"><span>'+item.label+' · '+item.time+'</span><b style="color:'+(item.delta>=0?'var(--green)':'var(--red)')+'">'+(item.delta>=0?'+':'')+money(item.delta)+'</b></div>').join(''):'Todavía no hay movimientos.';
-}
-function recordMove(kind){
- if(stopped)return;
- const stake=Number($('manualStake').value);
- if(!Number.isFinite(stake)||stake<=0){
-  $('sessionStatus').textContent='Introduce un importe válido.';
-  return;
- }
- if(kind==='loss'&&stake>balance){
-  $('sessionStatus').textContent='El importe supera el saldo de referencia disponible.';
-  return;
- }
- if(kind==='loss'&&stake>Math.max(0,LOSS_CAP-totalLoss)){
-  $('sessionStatus').textContent='Ese importe supera la pérdida disponible de la sesión. Reduce la apuesta o detén la sesión.';
-  return;
- }
- let delta,label;
- if(kind==='loss'){
-  delta=-stake;
-  label='Pérdida registrada';
- }else{
-  const profit=Number($('winProfit').value);
-  if(!Number.isFinite(profit)||profit<=0){
-   $('sessionStatus').textContent='Introduce una ganancia neta válida.';
-   return;
-  }
-  delta=profit;
-  label='Ganancia neta registrada';
- }
- if(!confirm('¿Confirmas el registro manual de '+label.toLowerCase()+' por '+money(Math.abs(delta))+'?'))return;
- if(kind==='loss')totalLoss+=stake;
- balance=Math.max(0,balance+delta);
- ledger.push({label,delta,time:new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})});
- renderSession();
-}
-$('recordLoss').addEventListener('click',()=>recordMove('loss'));
-$('recordWin').addEventListener('click',()=>recordMove('win'));
-$('stopSession').addEventListener('click',()=>{
- stopped=true;
- renderSession();
-});
-$('newSession').addEventListener('click',()=>{
- if(!confirm('¿Reiniciar el registro local a $5.00 y borrar los movimientos de esta sesión?'))return;
- balance=SESSION_START;
- totalLoss=0;
- stopped=false;
- ledger=[];
- $('manualStake').value=DEFAULT_STAKE.toFixed(2);
- $('winProfit').value=DEFAULT_STAKE.toFixed(2);
- renderSession();
-});
-renderSession();
-if('serviceWorker'in navigator&&location.protocol.startsWith('http')){
- window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-}
-</script></body></html>+n.toFixed(2);
-function renderSession(){
- const loss=totalLoss;
- $('walletBalance').textContent=money(balance);
- $('sessionLoss').textContent=money(loss);
- $('lossBar').style.width=Math.min(100,loss/LOSS_CAP*100)+'%';
- $('lossBar').style.background=loss>=LOSS_CAP?'var(--red)':'var(--gold)';
- const capped=loss>=LOSS_CAP-0.000001;
- if(capped) stopped=true;
- $('sessionStatus').textContent=capped?'LÍMITE ALCANZADO: sesión detenida. No registres más apuestas.':stopped?'Sesión detenida manualmente. Reiníciala solo cuando decidas comenzar otra.':'Sesión activa para registro manual. Pérdida disponible: '+money(Math.max(0,LOSS_CAP-loss))+'.';
- $('sessionStatus').style.color=capped?'var(--red)':'var(--muted)';
- $('recordLoss').disabled=stopped||balance<=0;
- $('recordWin').disabled=stopped;
- $('ledger').innerHTML=ledger.length?ledger.slice().reverse().map(x=>'<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)"><span>'+x.label+' · '+x.time+'</span><b style="color:'+(x.delta>=0?'var(--green)':'var(--red)')+'">'+(x.delta>=0?'+':'')+money(x.delta)+'</b></div>').join(''):'Todavía no hay movimientos.';
-}
-function recordMove(kind){
- if(stopped)return;
- const stake=Number($('manualStake').value);
- if(!Number.isFinite(stake)||stake<=0){$('sessionStatus').textContent='Introduce un importe válido.';return}
- if(kind==='loss'&&stake>balance){$('sessionStatus').textContent='El importe supera el saldo de referencia disponible.';return}\n if(kind==='loss'&&stake>Math.max(0,LOSS_CAP-totalLoss)){ $('sessionStatus').textContent='Ese importe supera la pérdida disponible de la sesión. Reduce la apuesta o detén la sesión.';return; }
- let delta,label;
- if(kind==='loss'){delta=-stake;label='Pérdida registrada';totalLoss+=stake;}
- else{
-  const profit=Number($('winProfit').value);
-  if(!Number.isFinite(profit)||profit<=0){$('sessionStatus').textContent='Introduce una ganancia neta válida.';return}
-  delta=profit;label='Ganancia neta registrada';
- }
- if(!confirm('¿Confirmas el registro manual de '+label.toLowerCase()+' por '+money(Math.abs(delta))+'?'))return;
- balance=Math.max(0,balance+delta);
- ledger.push({label,delta,time:new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})});
- renderSession();
-}
-$('recordLoss').addEventListener('click',()=>recordMove('loss'));
-$('recordWin').addEventListener('click',()=>recordMove('win'));
-$('stopSession').addEventListener('click',()=>{stopped=true;renderSession()});
-$('newSession').addEventListener('click',()=>{
- if(!confirm('¿Reiniciar el registro local a $5.00 y borrar los movimientos de esta sesión?'))return;
- balance=SESSION_START;totalLoss=0;stopped=false;ledger=[];$('manualStake').value=DEFAULT_STAKE.toFixed(2);$('winProfit').value=DEFAULT_STAKE.toFixed(2);renderSession();
-});
-renderSession();
-if('serviceWorker'in navigator&&location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+const fmtMoney=n=>'$'+Number(n).toFixed(2);
+const fmtPct=n=>n.toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
+function counts(){return{safe:states.filter(x=>x===1).length,mines:states.filter(x=>x===2).length,hidden:states.filter(x=>x===0).length};}
+function renderBoard(){const board=$('board');board.innerHTML='';states.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.className='cell'+(s===1?' safe':s===2?' mine':'');b.textContent=s===1?'◆':s===2?'✹':'·';b.setAttribute('aria-label','Casilla '+(i+1)+': '+(s===0?'oculta':s===1?'gema revelada':'mina revelada'));b.setAttribute('aria-pressed',String(s!==0));b.addEventListener('click',()=>{states[i]=(states[i]+1)%3;renderBoard();updateAnalysis();});board.appendChild(b);});}
+function updateAnalysis(){const total=Number($('mines').value),c=counts(),left=total-c.mines,valid=left>=0&&left<=c.hidden;$('mineCount').textContent=total;$('safeCount').textContent=c.safe;$('knownMines').textContent=c.mines;$('remainingMines').textContent=Math.max(0,left);$('hiddenCount').textContent=c.hidden;$('risk').textContent=valid&&c.hidden?fmtPct(left/c.hidden*100):'—';$('analysisMsg').textContent=valid?'Riesgo uniforme estimado. No existe una casilla oculta con ventaja demostrable.':'Marcas incompatibles: revisa la cantidad de minas y las minas confirmadas.';$('analysisMsg').className='message '+(valid?'':'red');let html='';const max=Math.min(Number($('target').value),c.hidden);for(let k=1;k<=max;k++){let p=1;for(let j=0;j<k;j++){const den=c.hidden-j;p*=den>0?(den-left)/den:0;}const pct=Math.max(0,Math.min(1,p))*100;html+='<div class="prob"><span>'+k+' '+(k===1?'gema':'gemas')+' seguidas</span><b class="'+(pct>=50?'green':'gold')+'">'+fmtPct(pct)+'</b><div class="bar"><i style="width:'+pct+'%"></i></div></div>';} $('probList').innerHTML=html||'<p class="note">No quedan casillas ocultas.</p>';return valid;}
+$('mines').addEventListener('change',updateAnalysis);$('target').addEventListener('change',updateAnalysis);
+$('clearBoard').addEventListener('click',()=>{states.fill(0);renderBoard();updateAnalysis();});
+$('newRound').addEventListener('click',()=>{states.fill(0);renderBoard();updateAnalysis();$('shot').value='';$('preview').removeAttribute('src');$('preview').style.display='none';$('uploadMsg').textContent='Nueva ronda lista.';});
+$('shot').addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;if(!f.type.startsWith('image/')){$('uploadMsg').textContent='Elige un archivo de imagen válido.';return;}const url=URL.createObjectURL(f);$('preview').src=url;$('preview').style.display='block';$('uploadMsg').textContent='Captura cargada: '+f.name+'. Recuerda que las marcas se realizan manualmente.';});
+const KEY='mines-intelligence-session-v31',START=5,CAP=2,DEFAULT=.25;
+let session={balance:START,loss:0,stopped:false,ledger:[]};
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved.balance==='number'&&typeof saved.loss==='number'&&Array.isArray(saved.ledger))session={...session,...saved};}catch(e){}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(session));}catch(e){}}
+function renderSession(){const capped=session.loss>=CAP-1e-9;if(capped)session.stopped=true;$('balance').textContent=fmtMoney(session.balance);$('loss').textContent=fmtMoney(session.loss);$('lossBar').style.width=Math.min(100,session.loss/CAP*100)+'%';$('lossBar').style.background=capped?'var(--red)':'var(--gold)';$('sessionMsg').textContent=capped?'LÍMITE DE PÉRDIDA ALCANZADO. Registro bloqueado.':session.stopped?'Sesión detenida manualmente.':'Sesión activa. Pérdida disponible: '+fmtMoney(Math.max(0,CAP-session.loss));$('sessionMsg').className='message '+(capped?'red':'');$('logLoss').disabled=session.stopped||session.balance<=0||session.loss>=CAP;$('logWin').disabled=session.stopped;$('ledger').innerHTML=session.ledger.length?session.ledger.slice().reverse().map(x=>'<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)"><span>'+x.label+' · '+x.time+'</span><b class="'+(x.delta>=0?'green':'red')+'">'+(x.delta>=0?'+':'')+fmtMoney(x.delta)+'</b></div>').join(''):'Sin movimientos registrados.';persist();}
+function move(kind){if(session.stopped)return;const stake=Number($('stake').value),profit=Number($('profit').value);if(!Number.isFinite(stake)||stake<=0){$('sessionMsg').textContent='Introduce una apuesta válida.';return;}let delta,label;if(kind==='loss'){if(stake>session.balance){$('sessionMsg').textContent='La pérdida supera el saldo de referencia.';return;}if(session.loss+stake>CAP+1e-9){$('sessionMsg').textContent='Esta pérdida superaría el límite de $2.00. Operación bloqueada.';return;}delta=-stake;label='Pérdida';}else{if(!Number.isFinite(profit)||profit<=0){$('sessionMsg').textContent='Introduce una ganancia neta válida.';return;}delta=profit;label='Ganancia neta';}if(!confirm('¿Confirmas registrar '+label.toLowerCase()+' de '+fmtMoney(Math.abs(delta))+'?'))return;session.balance=Math.max(0,session.balance+delta);if(delta<0)session.loss+=Math.abs(delta);session.ledger.push({label,delta,time:new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})});renderSession();}
+$('logLoss').addEventListener('click',()=>move('loss'));$('logWin').addEventListener('click',()=>move('win'));
+$('stop').addEventListener('click',()=>{session.stopped=true;renderSession();});
+$('resetSession').addEventListener('click',()=>{if(!confirm('¿Reiniciar el registro local a $5.00 y borrar todos los movimientos?'))return;session={balance:START,loss:0,stopped:false,ledger:[]};$('stake').value=DEFAULT.toFixed(2);$('profit').value=DEFAULT.toFixed(2);renderSession();});
+renderBoard();updateAnalysis();renderSession();
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script></body></html>
